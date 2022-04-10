@@ -153,5 +153,5 @@ chroot "/mnt/root" /usr/bin/env -i   \
 	TERM="$TERM"                \
 	PS1='(yiffOS chroot) \u:\w\$ ' \
 	PATH=/usr/bin:/usr/sbin     \
-	/bin/sh /root/yiffosP2
+	/bin/bash /root/yiffosP2
 
