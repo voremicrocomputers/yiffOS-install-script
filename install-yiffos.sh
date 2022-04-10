@@ -106,6 +106,7 @@ umount -l $R/proc
 rm -rf $R/proc/self
 
 export INSTALL_ROOT=$R
+yes | bulge s
 yes | bulge setup # to be removed in the future, keep for now though
 yes | bulge gi base
 # yes | bulge i corefiles # this was to fix a bug
