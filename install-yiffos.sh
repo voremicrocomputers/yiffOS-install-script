@@ -137,7 +137,7 @@ echo 'systemctl preset-all' >> $R/root/yiffosP2
 echo 'systemctl disable systemd-time-wait-sync.service' >> $R/root/yiffosP2
 echo '' >> $R/root/yiffosP2
 echo 'dracut --kver 5.16.11-yiffOS --force' >> $R/root/yiffosP2
-echo 'ln -s /usr/bin/bash /usr/bin/sh' >> $R/root/yiffosP2
+echo 'ln -s /usr/bin/bash /usr/bin/bash' >> $R/root/yiffosP2
 echo 'grub-mkconfig -o /boot/grub/grub.cfg' >> $R/root/yiffosP2
 echo '' >> $R/root/yiffosP2
 echo 'touch /etc/shadow' >> $R/root/yiffosP2
