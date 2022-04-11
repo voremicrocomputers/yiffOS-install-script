@@ -108,6 +108,9 @@ yes | bulge gi base
 yes | bulge i gnutls libxcrypt libgcrypt grub2 btrfs-progs grep
 yes | bulge i bulge
 
+# install some gosh darn text editors, unless you're a maniac
+yes | bulge i vim nano
+
 mount -vt tmpfs tmpfs $R/run
 ln -sfv /run $R/var/run
 ln -sfv /run/lock $R/var/lock
@@ -139,6 +142,7 @@ echo 'touch /etc/shadow' >> $R/root/yiffosP2
 echo 'touch cock' >> $R/root/yiffosP2
 echo 'touch grass' >> $R/root/yiffosP2
 echo 'passwd root' >> $R/root/yiffosP2
+echo 'chmod +x /usr/bin/ping' >> $R/root/yiffosP2 # won't be needed in the future
 echo 'echo "yiffos installed (:"' >> $R/root/yiffosP2
 chmod +x $R/root/yiffosP2
 
