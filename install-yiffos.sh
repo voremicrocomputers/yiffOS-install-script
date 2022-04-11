@@ -20,7 +20,6 @@ mkdir -pv $R/{dev,proc,sys,run}
 mount -v --bind /dev $R/dev
 mount -vt proc proc $R/proc
 mount -vt sysfs sysfs $R/sys
-mount -vt tmpfs tmpfs $R/run
 
 mkdir -pv $R/{boot,home,mnt,opt,srv}
 mkdir -pv $R/etc/{opt,sysconfig}
@@ -34,8 +33,6 @@ mkdir -pv $R/usr/{,local/}share/man/man{1..8}
 mkdir -pv $R/var/{cache,local,log,mail,opt,spool}
 mkdir -pv $R/var/lib/{color,misc,locate}
 
-ln -sfv /run $R/var/run
-ln -sfv /run/lock $R/var/lock
 
 install -dv -m 0750 $R/root
 install -dv -m 1777 $R/tmp $R/var/tmp
@@ -110,6 +107,10 @@ yes | bulge gi base
 # yes | bulge i corefiles # this was to fix a bug
 yes | bulge i gnutls libxcrypt libgcrypt grub2 btrfs-progs grep
 yes | bulge i bulge
+
+mount -vt tmpfs tmpfs $R/run
+ln -sfv /run $R/var/run
+ln -sfv /run/lock $R/var/lock
 
 mount -vt proc proc $R/proc
 
