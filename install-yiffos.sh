@@ -40,8 +40,7 @@ ln -sfv /run/lock $R/var/lock
 install -dv -m 0750 $R/root
 install -dv -m 1777 $R/tmp $R/var/tmp
 
-echo "" > $R/etc/passwd
-echo "root:x:0:0:root:/root:/bin/bash" >> $R/etc/passwd
+echo "root:x:0:0:root:/root:/bin/bash" > $R/etc/passwd
 echo "bin:x:1:1:bin:/dev/null:/usr/bin/false" >> $R/etc/passwd
 echo "daemon:x:6:6:Daemon User:/dev/null:/usr/bin/false" >> $R/etc/passwd
 echo "messagebus:x:18:18:D-Bus Message Daemon User:/run/dbus:/usr/bin/false" >> $R/etc/passwd
@@ -56,8 +55,7 @@ echo "uuidd:x:80:80:UUID Generation Daemon User:/dev/null:/usr/bin/false" >> $R/
 echo "systemd-oom:x:81:81:systemd Out Of Memory Daemon:/:/usr/bin/false" >> $R/etc/passwd
 echo "nobody:x:99:99:Unprivileged User:/dev/null:/usr/bin/false" >> $R/etc/passwd
 
-echo "" > $R/etc/groups
-echo "root:x:0:" >> $R/etc/groups
+echo "root:x:0:" > $R/etc/groups
 echo "bin:x:1:daemon" >> $R/etc/groups
 echo "sys:x:2:" >> $R/etc/groups
 echo "kmem:x:3:" >> $R/etc/groups
@@ -130,8 +128,7 @@ genfstab -U $R > $R/etc/fstab
 cp ./yiffosP2 $R/root/
 cp /usr/sbin/chroot $R/usr/sbin/chroot
 
-echo "" > $R/root/yiffosP2
-echo '#!/bin/bash' >> $R/root/yiffosP2
+echo '#!/bin/bash' > $R/root/yiffosP2
 echo 'systemd-machine-id-setup' >> $R/root/yiffosP2
 echo 'systemctl preset-all' >> $R/root/yiffosP2
 echo 'systemctl disable systemd-time-wait-sync.service' >> $R/root/yiffosP2
