@@ -125,7 +125,6 @@ esac
 
 genfstab -U $R > $R/etc/fstab
 
-cp ./yiffosP2 $R/root/
 cp /usr/sbin/chroot $R/usr/sbin/chroot
 
 echo '#!/bin/bash' > $R/root/yiffosP2
