@@ -133,6 +133,7 @@ cp /usr/sbin/chroot $R/usr/sbin/chroot
 
 echo '#!/bin/bash' > $R/root/yiffosP2
 echo 'ln -s /usr/bin/bash /usr/bin/sh' >> $R/root/yiffosP2
+echo 'rm -r /var/run/dbus' >> $R/root/yiffosP2
 echo 'ln -s /run/dbus/ /var/run/dbus' >> $R/root/yiffosP2
 echo 'systemd-machine-id-setup' >> $R/root/yiffosP2
 echo 'systemctl preset-all' >> $R/root/yiffosP2
