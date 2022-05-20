@@ -87,6 +87,8 @@ echo "wheel:x:97:" >> $R/etc/group
 echo "nogroup:x:99:" >> $R/etc/group
 echo "users:x:999:" >> $R/etc/group
 
+echo "/bin/bash" > $R/etc/shells
+
 touch $R/var/log/{btmp,lastlog,faillog,wtmp}
 chgrp -v utmp $R/var/log/lastlog
 chmod -v 664  $R/var/log/lastlog
