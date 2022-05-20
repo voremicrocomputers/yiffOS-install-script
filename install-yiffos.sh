@@ -108,6 +108,7 @@ yes | bulge s
 yes | bulge gi base
 # yes | bulge i corefiles # this was to fix a bug
 yes | bulge i gnutls libxcrypt libgcrypt grub2 btrfs-progs grep
+yes | bulge i networkmanager # some people were complaining about this not being installed
 yes | bulge i bulge
 
 # install some gosh darn text editors, unless you're a maniac
