@@ -52,40 +52,42 @@ echo "uuidd:x:80:80:UUID Generation Daemon User:/dev/null:/usr/bin/false" >> $R/
 echo "systemd-oom:x:81:81:systemd Out Of Memory Daemon:/:/usr/bin/false" >> $R/etc/passwd
 echo "nobody:x:99:99:Unprivileged User:/dev/null:/usr/bin/false" >> $R/etc/passwd
 
-echo "root:x:0:" > $R/etc/groups
-echo "bin:x:1:daemon" >> $R/etc/groups
-echo "sys:x:2:" >> $R/etc/groups
-echo "kmem:x:3:" >> $R/etc/groups
-echo "tape:x:4:" >> $R/etc/groups
-echo "tty:x:5:" >> $R/etc/groups
-echo "daemon:x:6:" >> $R/etc/groups
-echo "floppy:x:7:" >> $R/etc/groups
-echo "disk:x:8:" >> $R/etc/groups
-echo "lp:x:9:" >> $R/etc/groups
-echo "dialout:x:10:" >> $R/etc/groups
-echo "audio:x:11:" >> $R/etc/groups
-echo "video:x:12:" >> $R/etc/groups
-echo "utmp:x:13:" >> $R/etc/groups
-echo "usb:x:14:" >> $R/etc/groups
-echo "cdrom:x:15:" >> $R/etc/groups
-echo "adm:x:16:" >> $R/etc/groups
-echo "messagebus:x:18:" >> $R/etc/groups
-echo "systemd-journal:x:23:" >> $R/etc/groups
-echo "input:x:24:" >> $R/etc/groups
-echo "mail:x:34:" >> $R/etc/groups
-echo "kvm:x:61:" >> $R/etc/groups
-echo "systemd-journal-gateway:x:73:" >> $R/etc/groups
-echo "systemd-journal-remote:x:74:" >> $R/etc/groups
-echo "systemd-journal-upload:x:75:" >> $R/etc/groups
-echo "systemd-network:x:76:" >> $R/etc/groups
-echo "systemd-resolve:x:77:" >> $R/etc/groups
-echo "systemd-timesync:x:78:" >> $R/etc/groups
-echo "systemd-coredump:x:79:" >> $R/etc/groups
-echo "uuidd:x:80:" >> $R/etc/groups
-echo "systemd-oom:x:81:" >> $R/etc/groups
-echo "wheel:x:97:" >> $R/etc/groups
-echo "nogroup:x:99:" >> $R/etc/groups
-echo "users:x:999:" >> $R/etc/groups
+echo "root:x:0:" > $R/etc/group
+echo "bin:x:1:daemon" >> $R/etc/group
+echo "sys:x:2:" >> $R/etc/group
+echo "kmem:x:3:" >> $R/etc/group
+echo "tape:x:4:" >> $R/etc/group
+echo "tty:x:5:" >> $R/etc/group
+echo "daemon:x:6:" >> $R/etc/group
+echo "floppy:x:7:" >> $R/etc/group
+echo "disk:x:8:" >> $R/etc/group
+echo "lp:x:9:" >> $R/etc/group
+echo "dialout:x:10:" >> $R/etc/group
+echo "audio:x:11:" >> $R/etc/group
+echo "video:x:12:" >> $R/etc/group
+echo "utmp:x:13:" >> $R/etc/group
+echo "usb:x:14:" >> $R/etc/group
+echo "cdrom:x:15:" >> $R/etc/group
+echo "adm:x:16:" >> $R/etc/group
+echo "messagebus:x:18:" >> $R/etc/group
+echo "systemd-journal:x:23:" >> $R/etc/group
+echo "input:x:24:" >> $R/etc/group
+echo "mail:x:34:" >> $R/etc/group
+echo "kvm:x:61:" >> $R/etc/group
+echo "systemd-journal-gateway:x:73:" >> $R/etc/group
+echo "systemd-journal-remote:x:74:" >> $R/etc/group
+echo "systemd-journal-upload:x:75:" >> $R/etc/group
+echo "systemd-network:x:76:" >> $R/etc/group
+echo "systemd-resolve:x:77:" >> $R/etc/group
+echo "systemd-timesync:x:78:" >> $R/etc/group
+echo "systemd-coredump:x:79:" >> $R/etc/group
+echo "uuidd:x:80:" >> $R/etc/group
+echo "systemd-oom:x:81:" >> $R/etc/group
+echo "wheel:x:97:" >> $R/etc/group
+echo "nogroup:x:99:" >> $R/etc/group
+echo "users:x:999:" >> $R/etc/group
+
+echo "/bin/bash" > $R/etc/shells
 
 touch $R/var/log/{btmp,lastlog,faillog,wtmp}
 chgrp -v utmp $R/var/log/lastlog
@@ -101,19 +103,20 @@ umount -l $R/proc
 rm -rf $R/proc/self
 
 export INSTALL_ROOT=$R
-yes | bulge s
 yes | bulge setup # to be removed in the future, keep for now though
+yes | bulge s
 yes | bulge gi base
 # yes | bulge i corefiles # this was to fix a bug
 yes | bulge i gnutls libxcrypt libgcrypt grub2 btrfs-progs grep
+yes | bulge i networkmanager # some people were complaining about this not being installed
 yes | bulge i bulge
 
 # install some gosh darn text editors, unless you're a maniac
 yes | bulge i vim nano
 
 mount -vt tmpfs tmpfs $R/run
-ln -sfv /run/ $R/var/run
-ln -sfv /run/lock/ $R/var/lock
+ln -sfv /run $R/var/run
+ln -sfv /run/lock $R/var/lock
 
 mount -vt proc proc $R/proc
 
@@ -137,7 +140,7 @@ echo 'ln -s /run/dbus/ /var/run/dbus' >> $R/root/yiffosP2
 echo 'systemd-machine-id-setup' >> $R/root/yiffosP2
 echo 'systemctl preset-all' >> $R/root/yiffosP2
 echo 'systemctl disable systemd-time-wait-sync.service' >> $R/root/yiffosP2
-echo 'dracut --kver 5.16.11-yiffOS --force' >> $R/root/yiffosP2
+echo 'dracut --kver 5.17.8-yiffOS --force' >> $R/root/yiffosP2
 echo 'grub-mkconfig -o /boot/grub/grub.cfg' >> $R/root/yiffosP2
 echo 'pwconv' >> $R/root/yiffosP2
 echo 'grpconv' >> $R/root/yiffosP2
