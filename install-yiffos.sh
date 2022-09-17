@@ -140,7 +140,7 @@ echo 'ln -s /run/dbus/ /var/run/dbus' >> $R/root/yiffosP2
 echo 'systemd-machine-id-setup' >> $R/root/yiffosP2
 echo 'systemctl preset-all' >> $R/root/yiffosP2
 echo 'systemctl disable systemd-time-wait-sync.service' >> $R/root/yiffosP2
-echo 'dracut --kver 5.17.8-yiffOS --force' >> $R/root/yiffosP2
+echo 'dracut --kver 5.18.14-yiffOS --force' >> $R/root/yiffosP2
 echo 'grub-mkconfig -o /boot/grub/grub.cfg' >> $R/root/yiffosP2
 echo 'pwconv' >> $R/root/yiffosP2
 echo 'grpconv' >> $R/root/yiffosP2
