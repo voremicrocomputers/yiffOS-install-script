@@ -115,8 +115,8 @@ yes | bulge i bulge
 yes | bulge i vim nano
 
 mount -vt tmpfs tmpfs $R/run
-ln -sfv /run $R/var/run
-ln -sfv /run/lock $R/var/lock
+ln -s /run $R/var/run
+ln -s /run/lock $R/var/lock
 
 mount -vt proc proc $R/proc
 
