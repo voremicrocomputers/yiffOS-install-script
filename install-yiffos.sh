@@ -43,7 +43,6 @@ mkdir -pv $R/usr/{,local/}share/man/man{1..8}
 mkdir -pv $R/var/{cache,local,log,mail,opt,spool}
 mkdir -pv $R/var/lib/{color,misc,locate}
 
-
 install -dv -m 0750 $R/root
 install -dv -m 1777 $R/tmp $R/var/tmp
 
@@ -126,9 +125,22 @@ yes | bulge i bulge
 # insert your favourite packages here!
 yes | bulge i linux-firmware networkmanager vim nano grub2 e2fsprogs grep btrfs-progs squashfs-tools xorriso
 yes | bulge i lvm2 cryptsetup util-linux
+yes | bulge i yiffos-installer-gtk
 
-ln -s /run $R/var/run
-ln -s /run/lock $R/var/lock
+# fixme: hack because mutter isn't currently being installed despite being required
+yes | bulge i mutter gnome-shell
+
+# hack, move $R/var/run/* to $R/run/
+rsync -a $R/var/run/ $R/run/
+rm -rf $R/var/run
+rsync -a $R/var/lock/ $R/run/lock/
+rm -rf $R/var/lock
+
+ln -sfv /run $R/var/run
+ln -sfv /run/lock $R/var/lock
+
+# make everyone sudo with no password!
+echo "installer ALL=(ALL) NOPASSWD:ALL" >> $R/etc/sudoers
 
 mount -vt proc proc $R/proc
 
@@ -148,7 +160,7 @@ esac
 
 echo '#!/bin/bash' > $R/root/yiffosP2
 echo 'ln -s /usr/bin/bash /usr/bin/sh' >> $R/root/yiffosP2
-echo 'ln -s /run/dbus/ /var/run/dbus' >> $R/root/yiffosP2
+#echo 'ln -s /run/dbus/ /var/run/dbus' >> $R/root/yiffosP2
 echo 'systemd-machine-id-setup' >> $R/root/yiffosP2
 echo 'systemctl preset-all' >> $R/root/yiffosP2
 echo 'systemctl disable systemd-time-wait-sync.service' >> $R/root/yiffosP2
@@ -159,6 +171,21 @@ echo 'pwconv' >> $R/root/yiffosP2
 echo 'grpconv' >> $R/root/yiffosP2
 echo 'touch cock' >> $R/root/yiffosP2
 echo 'touch grass' >> $R/root/yiffosP2
+echo 'systemd-sysusers' >> $R/root/yiffosP2
+echo 'glib-compile-schemas /usr/share/glib-2.0/schemas' >> $R/root/yiffosP2
+echo 'for f in /usr/share/icons/*/; do' >> $R/root/yiffosP2
+# shellcheck disable=SC2016
+echo 'gtk4-update-icon-cache -t -f "$f"' >> $R/root/yiffosP2
+# shellcheck disable=SC2016
+echo 'gtk-update-icon-cache -t -f "$f"' >> $R/root/yiffosP2
+echo 'done' >> $R/root/yiffosP2
+echo 'systemctl enable gdm' >> $R/root/yiffosP2
+echo 'systemctl enable NetworkManager' >> $R/root/yiffosP2
+
+# fixme: temporary hack for polkit
+echo 'groupadd -fg 27 polkitd' >> $R/root/yiffosP2
+echo 'useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 -g polkitd -s /bin/false polkitd' >> $R/root/yiffosP2
+
 echo 'passwd root' >> $R/root/yiffosP2
 echo 'chmod +x /usr/bin/ping' >> $R/root/yiffosP2 # won't be needed in the future
 echo 'echo "yiffos installed (:"' >> $R/root/yiffosP2

@@ -32,7 +32,7 @@ mkdir -p "$INITRAMFS_DIR"
 cd "$ROOT" || exit 1
 
 ROOTIMG=$(mktemp -d)/rootfs.img
-truncate -s 4G "$ROOTIMG"
+truncate -s 8G "$ROOTIMG"
 mkfs.ext4 "$ROOTIMG"
 
 MROOT="/mnt/rootimg"
@@ -77,11 +77,18 @@ mount /dev/loop0 "$BOOT_IMG_DATA"
 
 mkdir -p "$BOOT_IMG_DATA"/EFI/Boot
 
+cat > "$BOOT_IMG_DATA"/EFI/Boot/embedgrub.cfg << EOF
+search.fs_label YIFFOS root
+set prefix=(\$root)/boot
+configfile \$prefix/grub.cfg
+EOF
+
 grub-mkimage \
     -C xz \
     -O x86_64-efi \
     -p /boot/grub \
     -o $BOOT_IMG_DATA/efi/boot/bootx64.efi \
+    --config="$BOOT_IMG_DATA"/EFI/Boot/embedgrub.cfg \
     boot linux search normal configfile \
     part_gpt btrfs ext2 fat iso9660 loopback \
     test keystatus gfxmenu regexp probe \
@@ -111,6 +118,16 @@ mkdir -p "$INITRAMFS_DIR"/boot
 mv "$ROOT"/cdinitramfs.img "$INITRAMFS_DIR"/boot/cdinitramfs.img
 mv "$ROOT"/boot/efi.img "$INITRAMFS_DIR"/boot/efi.img
 cp "$ROOT"/boot/vmlinuz-"$KVER"yiffOS "$INITRAMFS_DIR"/boot/vmlinuz
+
+cat > "$INITRAMFS_DIR"/boot/grub.cfg << EOF
+set default=0
+set timeout=7
+
+menuentry "yiffOS" {
+  linux /boot/vmlinuz root=live:CDLABEL=YIFFOS
+  initrd /boot/cdinitramfs.img
+}
+EOF
 
 cd "$ROOT" || exit 1
 umount proc sys dev
