@@ -1,12 +1,22 @@
-#!/bin/bash
-export R=/mnt/root
-mkdir -p $R
-mount $2 $R
+#!/usr/bin/env bash
+echo ""
+echo ""
+echo ""
+echo "=== yiffOS containerised system generation script (for real systems) ==="
+echo ""
 
-mkdir -p $R/boot/efi
-mount $1 $R/boot/efi
-swapon
+# check if root
+if [ "$(id -u)" != "0" ]; then
+  echo "error: this script must be run as root!"
+  echo "if you experience this error in production, please report it to the developers!"
+  exit 1
+fi
 
+echo "storing temporary root in /mnt/root"
+export R="/mnt/root"
+mkdir -p "$R"
+
+echo "creating base filesystem"
 mkdir -pv $R/{etc,var}
 mkdir -pv $R/usr/{bin,lib,sbin}
 for i in bin lib sbin; do
@@ -103,18 +113,20 @@ umount -l $R/proc
 rm -rf $R/proc/self
 
 export INSTALL_ROOT=$R
-yes | bulge setup # to be removed in the future, keep for now though
+yes | bulge setup # fixme: bulge setup may be removed in the future, we need to find a better way to do this
+
+# fixme: bulge setup will also use the wrong mirrors
+sed -i 's/\/\/repo/\/\/mirror/g' $R/etc/bulge/mirrors
+
 yes | bulge s
 yes | bulge gi base
-# yes | bulge i corefiles # this was to fix a bug
-yes | bulge i gnutls libxcrypt libgcrypt grub2 btrfs-progs grep
-yes | bulge i networkmanager # some people were complaining about this not being installed
+yes | bulge i gnutls libxcrypt libgcrypt
 yes | bulge i bulge
 
-# install some gosh darn text editors, unless you're a maniac
-yes | bulge i vim nano
+# insert your favourite packages here!
+yes | bulge i linux-firmware networkmanager vim nano grub2 e2fsprogs grep btrfs-progs squashfs-tools xorriso
+yes | bulge i lvm2 cryptsetup util-linux
 
-mount -vt tmpfs tmpfs $R/run
 ln -s /run $R/var/run
 ln -s /run/lock $R/var/lock
 
@@ -130,9 +142,9 @@ case $(uname -m) in
     ;;
 esac
 
-genfstab -U $R > $R/etc/fstab
-
-cp /usr/sbin/chroot $R/usr/sbin/chroot
+#genfstab -U $R > $R/etc/fstab
+#echo "/dev/sr0 /mnt/live iso9660 defaults 0 0" >> $R/etc/fstab
+#echo "/mnt/live/rootfs.squashfs / squashfs defaults 0 0" >> $R/etc/fstab
 
 echo '#!/bin/bash' > $R/root/yiffosP2
 echo 'ln -s /usr/bin/bash /usr/bin/sh' >> $R/root/yiffosP2
