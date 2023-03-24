@@ -171,4 +171,3 @@ xorriso -as mkisofs \
     -no-emul-boot -isohybrid-gpt-basdat \
     -o /output/yiffos.iso \
     .
-bash

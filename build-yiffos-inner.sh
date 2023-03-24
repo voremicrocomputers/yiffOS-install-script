@@ -29,4 +29,4 @@ echo "build-yiffos-inner.sh: running mkiso.sh"
 # copy the iso to the output directory
 echo "build-yiffos-inner.sh: moving iso to output directory"
 
-mv /mnt/iso/yiffos.iso /output/yiffos.iso || script_fail "moving iso"
+#mv /mnt/iso/yiffos.iso /output/yiffos.iso || script_fail "moving iso"

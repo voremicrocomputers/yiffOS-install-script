@@ -124,8 +124,8 @@ yes | bulge i bulge
 
 # insert your favourite packages here!
 yes | bulge i linux-firmware networkmanager vim nano grub2 e2fsprogs grep btrfs-progs squashfs-tools xorriso
-yes | bulge i lvm2 cryptsetup util-linux
-yes | bulge i yiffos-installer-gtk
+yes | bulge i lvm2 cryptsetup util-linux genfstab
+yes | bulge i yiffos-installer-gtk gcr sudo liberation-fonts gnome-console
 
 # fixme: hack because mutter isn't currently being installed despite being required
 yes | bulge i mutter gnome-shell
@@ -172,8 +172,10 @@ echo 'grpconv' >> $R/root/yiffosP2
 echo 'touch cock' >> $R/root/yiffosP2
 echo 'touch grass' >> $R/root/yiffosP2
 echo 'systemd-sysusers' >> $R/root/yiffosP2
+echo 'update-mime-database /usr/share/mime/' >> $R/root/yiffosP2
 echo 'glib-compile-schemas /usr/share/glib-2.0/schemas' >> $R/root/yiffosP2
-echo 'for f in /usr/share/icons/*/; do' >> $R/root/yiffosP2
+echo 'gtk-query-immodules-3.0 --update-cache' >> $R/root/yiffosP2
+echo 'for f in /usr/share/icons/**/; do' >> $R/root/yiffosP2
 # shellcheck disable=SC2016
 echo 'gtk4-update-icon-cache -t -f "$f"' >> $R/root/yiffosP2
 # shellcheck disable=SC2016
@@ -181,6 +183,7 @@ echo 'gtk-update-icon-cache -t -f "$f"' >> $R/root/yiffosP2
 echo 'done' >> $R/root/yiffosP2
 echo 'systemctl enable gdm' >> $R/root/yiffosP2
 echo 'systemctl enable NetworkManager' >> $R/root/yiffosP2
+echo 'systemctl enable accounts-daemon' >> $R/root/yiffosP2
 
 # fixme: temporary hack for polkit
 echo 'groupadd -fg 27 polkitd' >> $R/root/yiffosP2
@@ -198,3 +201,5 @@ chroot "/mnt/root" /usr/bin/env -i   \
 	PATH=/usr/bin:/usr/sbin     \
 	/bin/bash /root/yiffosP2
 
+# remove the installer
+rm -rf $R/root/yiffosP2

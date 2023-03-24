@@ -32,4 +32,7 @@ echo "running container $CONTAINER_NAME with output directory $OUTPUT_DIR"
 # cap_sys_admin is required for mount (we need to mount an img file. if there was a stricter capability for this, we would use it)
 "$I_PREFER" run --rm -it --cap-add sys_chroot --cap-add cap_mknod --cap-add cap_sys_admin --privileged -v "$OUTPUT_DIR":/output -v "$SCRIPTS_DIR":/factory "$CONTAINER_NAME" /factory/build-yiffos-inner.sh
 
+# chown the output directory to the current user
+chown -R "$(id -u):$(id -g)" "$OUTPUT_DIR"
+
 echo "done! your output is in $OUTPUT_DIR!"
