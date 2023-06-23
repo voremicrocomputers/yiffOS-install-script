@@ -1,4 +1,5 @@
 #!/bin/bash
+make-ca -g
 export R=/mnt/root
 mkdir -p $R
 mount $2 $R
